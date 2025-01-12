@@ -1,0 +1,50 @@
+﻿@page
+@model PoliclinicaHope.Pages.Proceduri.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Procedura</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Procedura.Denumire" class="control-label"></label>
+                <input asp-for="Procedura.Denumire" class="form-control" />
+                <span asp-validation-for="Procedura.Denumire" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Procedura.Descriere" class="control-label"></label>
+                <input asp-for="Procedura.Descriere" class="form-control" />
+                <span asp-validation-for="Procedura.Descriere" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Procedura.MedicId" class="control-label">Nume Medic</label>
+                <select asp-for="Procedura.MedicId" class="form-control" asp-items="ViewBag.MedicId">
+                </select>
+                <span asp-validation-for="Procedura.MedicId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Procedura.Pret" class="control-label"></label>
+                <input asp-for="Procedura.Pret" class="form-control" />
+                <span asp-validation-for="Procedura.Pret" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
