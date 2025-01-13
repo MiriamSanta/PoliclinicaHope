@@ -11,7 +11,7 @@ using PoliclinicaHope.Models;
 
 namespace PoliclinicaHope.Pages.Proceduri
 {
-    public class CreateModel : PageModel
+    public class CreateModel : PopulareApartenentaDepartament
     {
         private readonly PoliclinicaHope.Data.PoliclinicaHopeContext _context;
 
