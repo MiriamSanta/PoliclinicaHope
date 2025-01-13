@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,7 +12,7 @@ using PoliclinicaHope.Models;
 
 namespace PoliclinicaHope.Pages.Proceduri
 {
-    public class EditModel : PageModel
+    public class EditModel : PopulareApartenentaDepartament
     {
         private readonly PoliclinicaHope.Data.PoliclinicaHopeContext _context;
 
@@ -30,50 +31,61 @@ namespace PoliclinicaHope.Pages.Proceduri
                 return NotFound();
             }
 
-            var procedura =  await _context.Procedura.FirstOrDefaultAsync(m => m.ID == id);
-            if (procedura == null)
+            Procedura = await _context.Procedura
+                .Include(p => p.Medic)
+                .Include(p => p.DepartamenteProceduri).ThenInclude(dp => dp.Departament)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (Procedura == null)
             {
                 return NotFound();
             }
-            Procedura = procedura;
-            ViewData["MedicId"] = new SelectList(_context.Set<Medic>(), "ID",
-"MedicName");
+
+            PopulateApartenentaDepartament(_context, Procedura);
+
+            ViewData["MedicId"] = new SelectList(_context.Medic, "ID", "MedicName");
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more information, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int? id, string[] selectedDepartamente)
         {
-            if (!ModelState.IsValid)
+            if (id == null)
             {
-                return Page();
+                return NotFound();
             }
 
-            _context.Attach(Procedura).State = EntityState.Modified;
+            var proceduraToUpdate = await _context.Procedura
+                .Include(p => p.Medic)
+                .Include(p => p.DepartamenteProceduri).ThenInclude(dp => dp.Departament)
+                .FirstOrDefaultAsync(m => m.ID == id);
 
-            try
+            if (proceduraToUpdate == null)
             {
+                return NotFound();
+            }
+
+            if (await TryUpdateModelAsync<Procedura>(
+                proceduraToUpdate,
+                "Procedura",
+                p => p.Denumire,
+                p => p.Descriere,
+                p => p.Pret,
+                p => p.MedicId))
+
+
+            {
+                UpdateDepartamenteProceduri(_context, selectedDepartamente, proceduraToUpdate);
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProceduraExists(Procedura.ID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return RedirectToPage("./Index");
             }
 
-            return RedirectToPage("./Index");
+            UpdateDepartamenteProceduri(_context, selectedDepartamente, proceduraToUpdate);
+            PopulateApartenentaDepartament(_context, proceduraToUpdate);
+            return Page();
+
+         
         }
 
-        private bool ProceduraExists(int id)
-        {
-            return _context.Procedura.Any(e => e.ID == id);
-        }
     }
 }

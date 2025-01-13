@@ -19,13 +19,46 @@ namespace PoliclinicaHope.Pages.Proceduri
             _context = context;
         }
 
-        public IList<Procedura> Procedura { get;set; } = default!;
+        public ProceduraData ProceduraD { get; set; } = default!;
+        public int ProceduraID { get; set; }
+        public int DepartamentID { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string? searchString, string? medicName, string? departamentName)
         {
-            Procedura = await _context.Procedura
-                .Include(b => b.Medic)
+            ProceduraD = new ProceduraData();
+
+            var proceduriQuery = _context.Procedura
+                .Include(p => p.Medic)
+                .Include(p => p.DepartamenteProceduri).ThenInclude(dp => dp.Departament)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                proceduriQuery = proceduriQuery.Where(p => p.Denumire.Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(medicName))
+            {
+                proceduriQuery = proceduriQuery.Where(p => p.Medic.MedicName.Contains(medicName));
+            }
+
+            if (!string.IsNullOrEmpty(departamentName))
+            {
+                proceduriQuery = proceduriQuery.Where(p => p.DepartamenteProceduri
+                    .Any(dp => dp.Departament.DepartamentName.Contains(departamentName)));
+            }
+
+            ProceduraD.Proceduri = await proceduriQuery
+                .OrderBy(p => p.Denumire)
+                .AsNoTracking()
                 .ToListAsync();
+        }
+
+
+        public class ProceduraData
+        {
+            public IEnumerable<Procedura> Proceduri { get; set; } = Enumerable.Empty<Procedura>();
+            public IEnumerable<Departament> Departamente { get; set; } = Enumerable.Empty<Departament>();
         }
     }
 }

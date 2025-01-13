@@ -1,0 +1,38 @@
+﻿@page
+@model PoliclinicaHope.Pages.Departamente.IndexModel
+
+@{
+    ViewData["Title"] = "Departamente";
+}
+
+<h1>Departamente</h1>
+
+<p>
+    <a asp-page="Create">Adauga Departament
+
+    </a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Departament[0].DepartamentName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Departament) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartamentName)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,54 +1,96 @@
-﻿@page
+﻿@page "/"
 @model PoliclinicaHope.Pages.Proceduri.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Proceduri";
 }
 
-<h1>Index</h1>
+<h1>Proceduri</h1>
+
+<form method="get" class="form-inline mb-3">
+    <div class="form-group mr-2">
+        <label for="searchString" class="sr-only">Procedură</label>
+        <input type="text" id="searchString" name="searchString" value="@Request.Query["searchString"]"
+               class="form-control" placeholder="Caută Procedură" />
+    </div>
+    <div class="form-group mr-2">
+        <label for="medicName" class="sr-only">Medic</label>
+        <input type="text" id="medicName" name="medicName" value="@Request.Query["medicName"]"
+               class="form-control" placeholder="Caută Medic" />
+    </div>
+    <div class="form-group mr-2">
+        <label for="departamentName" class="sr-only">Departament</label>
+        <input type="text" id="departamentName" name="departamentName" value="@Request.Query["departamentName"]"
+               class="form-control" placeholder="Caută Departament" />
+    </div>
+    <button type="submit" class="btn btn-primary">Caută</button>
+</form>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create">Adauga Procedura
+
+    </a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Procedura[0].Denumire)
+                @Html.DisplayNameFor(model => model.ProceduraD.Proceduri.First().Denumire)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Procedura[0].Descriere)
+                @Html.DisplayNameFor(model => model.ProceduraD.Proceduri.First().Descriere)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Procedura[0].Medic.MedicName)
+                @Html.DisplayNameFor(model => model.ProceduraD.Proceduri.First().Medic.MedicName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Procedura[0].Pret)
+                @Html.DisplayNameFor(model => model.ProceduraD.Proceduri.First().Pret)
+            </th>
+            <th>
+                @Html.DisplayName("Departamente Asociate")
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Procedura) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Denumire)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descriere)
-            </td>
+        @foreach (var item in Model.ProceduraD.Proceduri)
+        {
+            string selectedRow = "";
+            if (item.ID == Model.ProceduraID)
+            {
+                selectedRow = "table-success";
+            }
+
+            <tr class="@selectedRow">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Denumire)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descriere)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Medic.MedicName)
                 </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pret)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+                <td>
+                    @Html.DisplayFor(modelItem => item.Pret)
+                </td>
+                <td>
+                    @{
+                        foreach (var departament in item.DepartamenteProceduri.Select(dp => dp.Departament))
+                        {
+                            <span>@departament.DepartamentName</span>
+
+                            <br />
+                        }
+                    }
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

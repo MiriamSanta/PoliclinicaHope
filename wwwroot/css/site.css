@@ -1,22 +1,139 @@
+﻿/* Dimensiuni generale */
 html {
-  font-size: 14px;
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
+/* Stiluri pentru body */
 body {
-  margin-bottom: 60px;
+    background-color: #f5f5f5; /* Fundal pastelat */
+    color: #4a4a4a; /* Text general */
+    font-family: "Arial", sans-serif;
+    line-height: 1.6;
+    margin-bottom: 60px; /* Spațiu pentru footer */
 }
+
+/* Navbar */
+.navbar {
+    background-color: #a8d0e6; /* Pastel albastru */
+    border-bottom: 3px solid #b8e4c9; /* Pastel verde */
+}
+
+    .navbar a.nav-link {
+        color: #fff; /* Text alb */
+        font-weight: bold;
+    }
+
+        .navbar a.nav-link:hover {
+            color: #ffdfba; /* Pastel galben */
+            text-decoration: underline;
+        }
+
+/* Focus și hover */
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb; /* Evidențiere albastră */
+}
+
+/* Footer */
+footer {
+    background-color: #a8d0e6;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+    footer a {
+        color: white;
+        text-decoration: underline;
+    }
+
+        footer a:hover {
+            color: #ffdfba; /* Galben pastelat */
+        }
+
+/* Tabele */
+.table {
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    .table thead {
+        background-color: #d5aaf4; /* Pastel mov */
+        color: white;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #a8d0e6; /* Albastru pastel */
+    }
+
+    .table tbody tr:nth-child(odd) {
+        background-color: #b8e4c9; /* Verde pastel */
+    }
+
+.table-hover tbody tr:hover {
+    background-color: #ffdfba; /* Galben pastel */
+}
+
+/* Butoane */
+.btn {
+    background-color: #b8e4c9; /* Verde pastel */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    transition: all 0.3s ease-in-out;
+}
+
+    .btn:hover {
+        background-color: #d5aaf4; /* Mov pastel */
+        transform: scale(1.05);
+    }
+
+/* Carduri */
+.card {
+    background-color: #fbc4ab; /* Pastel roz */
+    border: none;
+    border-radius: 10px;
+    color: #4a4a4a;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+    .card:hover {
+        background-color: #ffdfba; /* Pastel galben */
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+
+/* Formulare */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+label {
+    font-weight: bold;
+}
+
+input.form-control, select.form-control, textarea.form-control {
+    border-radius: 5px;
+    border: 1px solid #a8d0e6; /* Albastru pastel */
+}
+
+    input.form-control:focus, select.form-control:focus, textarea.form-control:focus {
+        border-color: #d5aaf4; /* Mov pastel */
+        box-shadow: 0 0 5px #d5aaf4;
+    }
